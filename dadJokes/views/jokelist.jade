@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1.
+    These are the Dad jokes  
+  ul
+      each joke, i in jokes
+          li 
+              a(href="http://localhost:3000/jokes?jokeid=#{joke._id}")= joke.setup
+  
+  

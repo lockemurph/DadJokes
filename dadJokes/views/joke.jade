@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= setup
+  h2= punchline
+  ul
+      each comment, i in comments
+          li= comment.text
+  
+  

@@ -1,0 +1,2 @@
+{ "setup": "Why did the chicken cross the road", "punchline": "To get to the other side!", "comments": [ {"user": "test1", "text": "An oldie but a goodie"}, {"user": "test2", "text": "Really bad!!"}]}
+{ "setup": "Why did the skeleton not cross the road", "punchline": "Because he didn't have any guts!", "comments": [ ]}
