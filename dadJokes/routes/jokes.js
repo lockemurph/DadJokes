@@ -1,95 +1,69 @@
 var express = require('express');
 var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
-var mongoUtil = require('../public/javascripts/mongoUtil');
 var errorUtil = require('../public/javascripts/errorUtil');
-
+var jokeController = require('../modules/jokeController');
+/* GET a list of jokes */
 router.get('/jokelist', function(req, res) {
-
-	var db = req.db;
+	jokeController.getJokeList(function(jokeList) {
+		if(jokeList) {
+			res.render('jokelist', { "jokes" : jokeList });
+		}
+		else {
+			errorUtil.renderError(res, "The jokes you are looking for seems to be missing");
+		}
+	});
+	/*var db = req.db;
 	var collection = db.get('jokes');
 	collection.find({},{},function(e,docs)
 	{
        res.render('jokelist', { "jokes" : docs });
-    });
-
-
-
+    });*/
 });
 
-
-/* GET users listing. */
+/* GET a joke. */
 router.get('/', function(req, res) {
 
-/*mongoUtil.validateId(req.query.jokeid, function(err, data) {
-	console.log(data);
-	if(data)
-	{
-	   res.render('joke', doc_joke );
-    }
-    else
-    {
-		errorUtil.renderError(res, "No Valid Id");
+jokeController.getJoke(req.query.jokeid, function(jokeDoc) {
+	if(jokeDoc) {
+		res.render('joke', jokeDoc );
+	}
+	else {
+		errorUtil.renderError(res, "The joke you are looking for seems to be missing");
 	}
 
-	});*/
+	});
 
-
-mongoUtil.validateId(req.query.jokeid, function(isValid) {
-	if(isValid)
-	{
-		console.log("True");
-		errorUtil.renderError(res, "No Valid Id");
-
-	}
-	else
-	{
-		console.log("False");
-			errorUtil.renderError(res, "No Valid Id");
-	}
-
-
-});
-
-/*if(mongoUtil.validateId(req.query.jokeid))
+/*if(ObjectID.isValid(req.query.jokeid))
 {
      var db = req.db
      db.get('jokes').findOne({"_id": new ObjectID(req.query.jokeid) }, function(err, doc_joke)
      {
-        console.log(mongoUtil.validateId(req.query.jokeid));
-        res.render('joke', doc_joke );
-       //res.render('joke', {"setup": "Hello Bob"} );
+        if(err)
+        {
+		   errorUtil.renderError(res, "Ooops!");
+		   //Don't expose user to error message but log it to the console
+		   console.log(err.err)
+		}
+		else if(doc_joke)
+		{
+		   //Everything is good, render the joke
+		   res.render('joke', doc_joke );
+	    }
+	    else
+	    {
+		   //A valid id was provided but the joke doesn't exist anymore
+		   errorUtil.renderError(res, "The joke you are looking for seems to be missing");
+		}
+
       });
  }
  else
  {
-    errorUtil.renderError(res, "No Valid Id");
+    //a bad id, likely typed in the address bar
+    errorUtil.renderError(res, "The joke you are looking for seems to be missing");
  }*/
 
- //           var db = req.db;
-//		    var collection = db.get('jokes');
-//		    collection.find({},{},function(e,docs){
-//				var doc  = docs.next();
-//		        res.render('joke', {
-//		            "jokes" : docs
-//		       });
-//   });
-
-        //  var db = req.db;
-		  //  var collection = db.get('users');
-		 //   var joke = collection.findOne();
-		 //   console.log(joke.username);
-		//    res.render('joke', joke);
-
-//		    collection.findOne({},{},function(e,docs){//
-		        //res.render('joke', {
-		        //    "joke" : docs
-		      // });
-   //});
-
- //       #res.render('joke', {
- //       #    "joke" : { "setup": "A test joke" }
-       //});
 });
 
 module.exports = router;
