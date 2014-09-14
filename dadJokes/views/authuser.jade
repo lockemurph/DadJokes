@@ -1,0 +1,8 @@
+block content
+    h1= title
+    form#formAuthUser(name="authuser",method="post",action="/users/authUser")
+        input#inputUserName(type="text", placeholder="username", name="username")
+        input#inputPassword(type="text", placeholder="password", name="password")
+        button#btnSubmit(type="submit") submit
+    if error
+        h2= error 

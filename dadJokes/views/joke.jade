@@ -3,8 +3,17 @@ extends layout
 block content
   h1= setup
   h2= punchline
-  ul
+  table
       each comment, i in comments
-          li= comment.text
+          tr
+              td= comment.user
+          tr
+              td= comment.text
+  br
+  form#formNewComment(name="newComment",method="post",action="/jokes/newComment")
+       textarea#inputComment(type="text", style='width: '+(100/2)+'%; height: 500px', placeholder="Add your comment here", name="comment")
+       input(id='jokeid',type='hidden',name='jokeid',value='#{_id}')
+       <br>
+       button#btnSubmit(type="submit") Submit
   
   

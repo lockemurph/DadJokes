@@ -1,68 +1,43 @@
 var express = require('express');
 var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
-var errorUtil = require('../public/javascripts/errorUtil');
-var jokeController = require('../modules/jokeController');
+var errorUtil = require('../modules/errorUtil');
+var jokeController = require('../modules/jokeModel');
+
 /* GET a list of jokes */
 router.get('/jokelist', function(req, res) {
+	console.log(req.session.user + "has looked at the jokes");
 	jokeController.getJokeList(function(jokeList) {
 		if(jokeList) {
 			res.render('jokelist', { "jokes" : jokeList });
+			//console.log(req.session.loggedIn);
 		}
 		else {
 			errorUtil.renderError(res, "The jokes you are looking for seems to be missing");
 		}
+
 	});
-	/*var db = req.db;
-	var collection = db.get('jokes');
-	collection.find({},{},function(e,docs)
-	{
-       res.render('jokelist', { "jokes" : docs });
-    });*/
 });
 
 /* GET a joke. */
 router.get('/', function(req, res) {
-
-jokeController.getJoke(req.query.jokeid, function(jokeDoc) {
-	if(jokeDoc) {
-		res.render('joke', jokeDoc );
-	}
-	else {
-		errorUtil.renderError(res, "The joke you are looking for seems to be missing");
-	}
-
+	jokeController.getJoke(req.query.jokeid, function(jokeDoc) {
+		if(jokeDoc) {
+			res.render('joke', jokeDoc );
+		}
+		else {
+			errorUtil.renderError(res, "The joke you are looking for seems to be missing");
+		}
 	});
+});
 
-/*if(ObjectID.isValid(req.query.jokeid))
-{
-     var db = req.db
-     db.get('jokes').findOne({"_id": new ObjectID(req.query.jokeid) }, function(err, doc_joke)
-     {
-        if(err)
-        {
-		   errorUtil.renderError(res, "Ooops!");
-		   //Don't expose user to error message but log it to the console
-		   console.log(err.err)
-		}
-		else if(doc_joke)
-		{
-		   //Everything is good, render the joke
-		   res.render('joke', doc_joke );
-	    }
-	    else
-	    {
-		   //A valid id was provided but the joke doesn't exist anymore
-		   errorUtil.renderError(res, "The joke you are looking for seems to be missing");
-		}
+/* Comment on a joke */
+router.post('/newComment', function(req, res) {
+	//console.log("Take a look at the reques" + req.body.comment);
+	jokeController.submitComment("test1","test",req.body.jokeid, req.body.comment, function(){
+		res.redirect('../jokes?jokeid=' + req.body.jokeid );
+		});
 
-      });
- }
- else
- {
-    //a bad id, likely typed in the address bar
-    errorUtil.renderError(res, "The joke you are looking for seems to be missing");
- }*/
 
 });
 

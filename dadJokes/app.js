@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -13,7 +14,10 @@ var users = require('./routes/users');
 var jokes = require('./routes/jokes');
 
 var app = express();
-
+//saveUninitialized and resave not being set causes errors
+app.use(session({secret: 'Everyone likes dad jokes',
+                 saveUninitialized: true,
+                 resave: true}))
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
