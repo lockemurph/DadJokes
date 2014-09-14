@@ -7,8 +7,14 @@ router.get('/', function(req, res) {
    res.render('newuser', { title: 'Add New User' });
 });
 
+router.post('/logout', function(req, res) {
+	var sess = req.session;
+	sess.destroy();
+	res.render('authuser', { title: 'Login' });
+});
 
 router.post('/adduser', function(req, res) {
+//TODO - impliment adding a new user
 	console.log(req.body.username);
 	res.render('newuser', { title: 'Add New User' });
 });

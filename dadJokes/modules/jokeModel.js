@@ -91,11 +91,17 @@ added to the joke, or failed to be added to the joke
 var addCommentToJoke = function(jokeId, comment, userName, callback) {
 	validateId(jokeId, function(jokeId) {
 		if(jokeId) {
-
-			jokes.update({_id:  new ObjectID(jokeId)}, {$push: { comments: {user: userName, text: comment}}}, callback)
+			jokes.update({_id:  new ObjectID(jokeId)}, {$push: { comments: {user: userName, text: comment}}}, function(err,joke_doc){
+				if(err){
+					callback(err,false);
+				}
+				else {
+					callback(null,true);
+				}
+			});
 		}
 		else {
-			callback("Bad Joke Id", null);
+			callback("Bad Joke Id", false);
 		}
 	});
 }
@@ -118,7 +124,7 @@ exports.submitComment = function(user, password, jokeId, comment, callback) {
 			callback(err,false);
 		}
 		else if(doc_user) {
-			addCommentToJoke(jokeId, comment, user, callback);
+			addCommentToJoke(jokeId, comment, doc_user.username, callback);
 		}
 		else {
 			callback("Please log in",false);
