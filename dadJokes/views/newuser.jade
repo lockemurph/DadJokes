@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    include header.jade
     h1= title
     form#formAddUser(name="adduser",method="post",action="/users/adduser")
         input#inputUserName(type="text", placeholder="username", name="username")

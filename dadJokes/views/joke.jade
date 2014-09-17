@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  include header.jade
   h1= setup
   h2= punchline
   table
@@ -20,7 +21,7 @@ block content
   else
     p.
       Please log in to comment
-  include logout.jade
+  include footer.jade
     
   
   

@@ -131,3 +131,41 @@ exports.submitComment = function(user, password, jokeId, comment, callback) {
 		}
 	});
 }
+
+var validateJoke = function(setup, punchline, callback) {
+	//TODO - impliment checks like length, word filter, etc
+	callback(true);
+}
+
+var addJoke = function(setup, punchline, callback) {
+	validateJoke(setup, punchline, function(valid) {
+		if(valid) {
+			jokes.insert({setup: setup, punchline: punchline, comments:[ ]}, function(err,joke_doc){
+				if(err){
+					callback(err,null);
+				}
+				else {
+					callback(null,joke_doc);
+				}
+			});
+		}
+		else {
+			callback("Unable to insert joke", null);
+		}
+	});
+}
+
+exports.submitJoke = function(user, password, setup, punchline, callback) {
+	userModel.loginUser(user,password,function(err,doc_user) {
+		if(err)	{
+			callback(err,false);
+		}
+		else if(doc_user) {
+			addJoke(setup, punchline, callback);
+		}
+		else {
+			callback("Please log in",false);
+		}
+	});
+}
+

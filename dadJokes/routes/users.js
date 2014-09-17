@@ -6,11 +6,14 @@ var userModel = require('../modules/userModel');
 router.get('/', function(req, res) {
    res.render('newuser', { title: 'Add New User' });
 });
-
+/**
+ * POST for logging out
+ **/
 router.post('/logout', function(req, res) {
 	var sess = req.session;
 	sess.destroy();
-	res.render('authuser', { title: 'Login' });
+	backURL=req.header('Referer')
+	res.redirect(backURL);
 });
 
 router.post('/adduser', function(req, res) {
@@ -29,7 +32,8 @@ router.post('/authuser', function(req, res) {
 			sess.user = validLogin.username;
 			//TODO - actual password support
 			sess.password = "goodpass";
-			res.redirect('../jokes/jokelist');
+			backURL=req.header('Referer')
+			res.redirect(backURL);
 		}
 		else {
 			res.render('authuser', { title: 'Login', error: err });

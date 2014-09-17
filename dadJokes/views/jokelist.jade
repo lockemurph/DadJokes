@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  include header.jade
   h1.
     These are the Dad jokes  
   ul
@@ -8,4 +9,4 @@ block content
           li 
               a(href="http://localhost:3000/jokes?jokeid=#{joke._id}")= joke.setup
   
-  include logout.jade
+  include footer.jade

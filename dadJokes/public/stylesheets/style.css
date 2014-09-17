@@ -3,6 +3,19 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.loginLogout {
+    float: right;
+    background-color: #b0c4de;
+} 
+
+#header table{
+    width: 100%
+}
+
+#header {
+    background-color: #C0C0C0;
+}
+
 a {
   color: #00B7FF;
 }
