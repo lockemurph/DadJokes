@@ -1,16 +1,16 @@
 extends layout
-
 block content
-  include header.jade
-  br
-  if session.user
-    form#formNewJoke(name="newJoke",method="post",action="/jokes/submitJoke")
-         textarea#inputsetup(type="text", style='width: '+(100/2)+'%; height: 250px', placeholder="Add your setup here", name="setup")
-         textarea#inputPunchline(type="text", style='width: '+(100/2)+'%; height: 100px', placeholder="Add your punchline here", name="punchline")
-         <br>
-         button#btnSubmit(type="submit") Submit
-         <br>
-  else
-    p.
-      Please log in to to submit jokes
-  include footer.jade
+	include header.jade
+	script(src="/javascripts/newJokeValidation.js")
+	br
+	if session.user
+		form#formNewJoke(name="newJoke",method="post",action="/jokes/submitJoke")
+			textarea#inputsetup(type="text", style='width: '+(100/2)+'%; height: 250px', placeholder="Add your setup here", name="setup")
+			textarea#inputPunchline(type="text", style='width: '+(100/2)+'%; height: 100px', placeholder="Add your punchline here", name="punchline")
+			<br>
+			button#btnSubmit(type="submit") Submit
+			<br>
+	else
+		p.
+			Please log in to to submit jokes
+	include footer.jade

@@ -37,12 +37,12 @@ router.get('/newJoke', function(req, res) {
 router.post('/submitJoke', function(req, res) {
 	var sess = req.session;
 	jokeController.submitJoke(sess.user, sess.password, req.body.setup, req.body.punchline, function(err, joke_doc) {
-	if(err) {
-		errorUtil.renderError(res, "There was an error telling your joke");
-	}
-	else {
-		res.redirect('../jokes?jokeid=' + joke_doc._id );
-	}
+		if(err) {
+			errorUtil.renderError(res, "There was an error telling your joke");
+		}
+		else {
+			res.redirect('../jokes?jokeid=' + joke_doc._id );
+		}
 	});
 });
 
