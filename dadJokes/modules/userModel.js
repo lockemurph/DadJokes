@@ -2,6 +2,7 @@ var monk = require('monk');
 var db = monk('localhost:27017/dadJoke');
 var ObjectID = require('mongodb').ObjectID;
 var users = db.get('users');
+var bcrypt = require('bcrypt');
 console.log("Setup Users Connection");
 
 
@@ -20,19 +21,46 @@ var getUser = function(userName, password, callback) {
 			callback(err,null)
 		}
 		else if(doc_user) {
-			//TODO - simulating a wrong password with hardcoded "bad".
-			//Impliment real solution
-			if(password == "bad") {
-				callback("Bad password", null);
-			}
-			else {
-				callback(null, doc_user);
-			}
+			bcrypt.compare(password, doc_user.password, function(err, res) {
+				if(res) {
+					callback(null, doc_user);
+				}
+				else {
+					callback("Bad password", null);
+				}			
+			});		
 		}
 		else {
 			callback("No user found",null);
 		}
 	});
+}
+
+/**
+ * Adds a user to the database.  Throws an error if the username already exists
+ * MongoDB has a ensuredIndex unique on the username as well
+ */
+var addUser = function(userName, password, callback) {
+	users.findOne({ "username" : userName }, function(err, doc_user) {
+		if(err) {
+			console.log(err)
+			callback(err, null)
+		}
+		else if(doc_user) {
+			callback("This username is taken", null)
+		}
+		else {
+			bcrypt.genSalt(10, function(err, salt) {
+				bcrypt.hash(password, salt, function(err, hash) {
+					users.insert( {username: userName, password: hash}, callback)
+				});
+			});		
+		}			
+	});
+}
+
+exports.addNewUser = function(user, password, callback) {
+	addUser(user, password, callback)
 }
 
 /**

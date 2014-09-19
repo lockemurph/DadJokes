@@ -137,10 +137,10 @@ var validateJoke = function(setup, punchline, callback) {
 	callback(true);
 }
 
-var addJoke = function(setup, punchline, callback) {
+var addJoke = function(user, setup, punchline, callback) {
 	validateJoke(setup, punchline, function(valid) {
 		if(valid) {
-			jokes.insert({setup: setup, punchline: punchline, comments:[ ]}, function(err,joke_doc){
+			jokes.insert({setup: setup, punchline: punchline, comments:[ ], votes: [ user ], author: user, date: new Date() }, function(err,joke_doc){
 				if(err){
 					callback(err,null);
 				}
@@ -161,7 +161,7 @@ exports.submitJoke = function(user, password, setup, punchline, callback) {
 			callback(err,false);
 		}
 		else if(doc_user) {
-			addJoke(setup, punchline, callback);
+			addJoke(user, setup, punchline, callback);
 		}
 		else {
 			callback("Please log in",false);

@@ -18,10 +18,11 @@ router.post('/logout', function(req, res) {
 
 router.post('/adduser', function(req, res) {
 //TODO - impliment adding a new user
-	console.log(req.body.username);
-	res.render('newuser', { title: 'Add New User' });
+	userModel.addNewUser(req.body.username, req.body.password, function(err, newLogin){
+		res.redirect('../jokes/jokelist' );
+	
 });
-
+});
 /**
 Post for logging in
 **/
@@ -30,8 +31,7 @@ router.post('/authuser', function(req, res) {
 		if(validLogin) {
 			var sess = req.session;
 			sess.user = validLogin.username;
-			//TODO - actual password support
-			sess.password = "goodpass";
+			sess.password = req.body.password;
 			backURL=req.header('Referer')
 			res.redirect(backURL);
 		}

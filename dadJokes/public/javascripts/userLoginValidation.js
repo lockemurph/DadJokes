@@ -2,7 +2,7 @@ $(document).ready(function () {
     $('#formAuthUser').validate({
         rules: {
         	username: { required: true, maxlength:10 },
-            password: { required: true, maxlength:2 }
+            password: { required: true, maxlength:100 }
         },
         messages: {
         	username: {required: "Enter a username please", maxlength:"The username is too long"},
