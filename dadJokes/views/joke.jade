@@ -1,27 +1,22 @@
 extends layout
 
 block content
-  include header.jade
-  h1= setup
-  h2= punchline
-  table
-      each comment, i in comments
-          tr
-              td= comment.user
-          tr
-              td= comment.text
-  br
-  if session.user
-    form#formNewComment(name="newComment",method="post",action="/jokes/newComment")
-         textarea#inputComment(type="text", style='width: '+(100/2)+'%; height: 500px', placeholder="Add your comment here", name="comment")
-         input(id='jokeid',type='hidden',name='jokeid',value='#{_id}')
-         <br>
-         button#btnSubmit(type="submit") Submit
-         <br>
-  else
-    p.
-      Please log in to comment
-  include footer.jade
-    
-  
-  
+	h1= setup
+	h2= punchline
+	table
+		each comment, i in comments
+			tr
+				td= comment.user
+			tr
+				td= comment.text
+	br
+	if session.user
+		form#formNewComment(name="newComment",method="post",action="/jokes/newComment")
+			textarea#inputComment(type="text", style='width: '+(100/2)+'%; height: 250px', placeholder="Add your comment here", name="comment")
+			input(id='jokeid',type='hidden',name='jokeid',value='#{_id}')
+			<br>
+			button#btnSubmit(type="submit") Submit
+			<br>
+	else
+		p.
+			Please log in to comment

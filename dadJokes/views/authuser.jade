@@ -1,5 +1,4 @@
 block content
-    include header.jade
     h1= title
     form#formAuthUser(name="authuser",method="post",action="/users/authUser")
         input#inputUserName(type="text", placeholder="username", name="username")
@@ -7,4 +6,3 @@ block content
         button#btnSubmit(type="submit") submit
     if error
         h2= error
-  include footer.jade

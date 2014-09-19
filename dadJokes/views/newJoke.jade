@@ -1,6 +1,5 @@
 extends layout
 block content
-	include header.jade
 	script(src="/javascripts/newJokeValidation.js")
 	br
 	if session.user
@@ -13,4 +12,3 @@ block content
 	else
 		p.
 			Please log in to to submit jokes
-	include footer.jade

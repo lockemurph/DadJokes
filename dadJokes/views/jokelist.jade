@@ -1,12 +1,9 @@
 extends layout
 
 block content
-  include header.jade
-  h1.
-    These are the Dad jokes  
-  ul
-      each joke, i in jokes
-          li 
-              a(href="http://localhost:3000/jokes?jokeid=#{joke._id}")= joke.setup
-  
-  include footer.jade
+		p.
+			These are the Dad jokes  
+		ul
+			each joke, i in jokes
+				li 
+					a(href="http://localhost:3000/jokes?jokeid=#{joke._id}")= joke.setup
