@@ -155,8 +155,8 @@ exports.submitComment = function(user, password, jokeId, comment, callback) {
 }
 
 var validateJoke = function(setup, punchline, callback) {
-	//TODO - impliment checks like length, word filter, etc
-	callback(true);
+	var badJoke = new RegExp("mom");
+	callback(!badJoke.test(setup) && !badJoke.test(punchline));
 }
 
 /**

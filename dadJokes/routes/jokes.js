@@ -52,10 +52,10 @@ router.post('/submitJoke', function(req, res) {
 	var sess = req.session;
 	jokeModel.submitJoke(sess.user, sess.password, req.body.setup, req.body.punchline, function(err, joke_doc) {
 		if(err) {
-			errorUtil.renderError(res, "There was an error telling your joke");
+			res.end(JSON.stringify({error: err}));
 		}
 		else {
-			res.redirect('../jokes?jokeid=' + joke_doc._id );
+			res.end(JSON.stringify(joke_doc));
 		}
 	});
 });

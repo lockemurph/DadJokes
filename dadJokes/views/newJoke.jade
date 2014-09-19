@@ -1,6 +1,8 @@
 extends layout
 block content
 	script(src="/javascripts/newJokeValidation.js")
+	script(src="/javascripts/newJoke.js")
+	#errorMessage
 	br
 	if session.user
 		form#formNewJoke(name="newJoke",method="post",action="/jokes/submitJoke")

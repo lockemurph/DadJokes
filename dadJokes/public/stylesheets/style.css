@@ -7,16 +7,19 @@ tr td:last-child {
 }
 
 #header, #footer {
-	background-color: #C0C0C0;
+	background-color: #558C89;
+	border: 2px solid;    
 }
 
 #header {
 	padding:10px;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
 }
 
 #content{
 	padding:10px;
-	padding-bottom:90px; 
+	padding-bottom:90px;
 }
 
 #headercontentfooter{
@@ -25,19 +28,24 @@ tr td:last-child {
 }
 
 #footer{
-	width:100%;
+	width:99.7%;
 	height:80px;
 	position:absolute;
 	bottom:0;
 	left:0;
+	border-top-left-radius: 25px;
+	border-top-right-radius: 25px;
 }
 
 html, body {
 	margin:0;
 	padding:0;
 	height:100%;
+	background-color: #74AFAD;
+	color: white;
 }
 
 a {
 	color: #00B7FF;
 }
+
