@@ -39,6 +39,13 @@ var getUser = function(userName, password, callback) {
 /**
  * Adds a user to the database.  Throws an error if the username already exists
  * MongoDB has a ensuredIndex unique on the username as well
+ * @param {String} username - the username to be added
+ * @param {String} password - the password the user submitted.  Will be hashed
+ * stored in the db
+ * @param {Function} callback(err, doc_user) called after the user is inserted 
+ * successfully or an error occurs.
+ * 		@param {String} err - an error message or null if no error happened
+ * 		@param {JSON} doc_user - the user that was inserted
  */
 var addUser = function(userName, password, callback) {
 	users.findOne({ "username" : userName }, function(err, doc_user) {
@@ -59,6 +66,16 @@ var addUser = function(userName, password, callback) {
 	});
 }
 
+/** Adds a user to the database.  Throws an error if the username already exists
+* MongoDB has a ensuredIndex unique on the username as well
+* @param {String} username - the username to be added
+* @param {String} password - the password the user submitted.  Will be hashed
+* stored in the db
+* @param {Function} callback(err, doc_user) called after the user is inserted 
+* successfully or an error occurs.
+* 		@param {String} err - an error message or null if no error happened
+* 		@param {JSON} doc_user - the user that was inserted
+*/
 exports.addNewUser = function(user, password, callback) {
 	addUser(user, password, callback)
 }
@@ -66,8 +83,6 @@ exports.addNewUser = function(user, password, callback) {
 /**
 Takes a user name and password and returns a user if the user name/password
 matches, or null if not
-TODO - currently password is ignored (with exception of hardcoded "bad" case)
-and just checks to see if the user exists impliment password
 @param {String} userName - the submitted username
 @param {String} password - the submitted password
 @param {Function} callback(err, doc_user) - called after the user is retrieved

@@ -78,6 +78,28 @@ exports.getJoke = function(jokeId, callback) {
 }
 
 /**
+Gets a last joke submitted
+@param {Function} callback(joke) - called after the joke is retrieved
+	@param {JSON} joke - the joke or null if an error occurs or there
+	is no joke of the provided id
+**/
+exports.getLatestJoke = function(callback) {
+	jokes.find({}, {"sort": [ "date" ]}, function(err, doc_joke) {
+				if(err) {
+					callback(null);
+				}
+				else if(doc_joke){
+					callback(doc_joke[doc_joke.length-1]);
+				}
+				else {
+					callback(null);
+				}
+			});
+}
+
+
+
+/**
 Adds a comment to a joke.  Should be called after user has been verfied
 @param {String} jokeId - the id of the joke to add a comment to
 @param {String} comment - the text of the comment being added
@@ -137,31 +159,54 @@ var validateJoke = function(setup, punchline, callback) {
 	callback(true);
 }
 
+/**
+ * Adds a joke to the database or throws an error if it is unsuccessful
+ * @param {String} user - the username of the author of the joke
+ * @param {String} setup - the setup of the joke
+ * @param {String} punchline - the punchline of the joke
+ * @param {Function} callback(err, joke_doc) - called after the joke is
+ * inserted or an error occurs
+ * 				@param {String} err - the error message or null if no error
+ * 				@param {JSON} joke_doc - the inserted joke 
+ */
 var addJoke = function(user, setup, punchline, callback) {
-	validateJoke(setup, punchline, function(valid) {
-		if(valid) {
-			jokes.insert({setup: setup, punchline: punchline, comments:[ ], votes: [ user ], author: user, date: new Date() }, function(err,joke_doc){
-				if(err){
-					callback(err,null);
-				}
-				else {
-					callback(null,joke_doc);
-				}
-			});
+	jokes.insert({setup: setup, punchline: punchline, comments:[ ], votes: [ user ], author: user, date: new Date() }, function(err,joke_doc) {
+		if(err){
+			callback(err,null);
 		}
 		else {
-			callback("Unable to insert joke", null);
+			callback(null,joke_doc);
 		}
 	});
 }
 
+/**
+ * Attempts to authorize the user, if successful attempts to validate the joke.
+ * If the user is authorized and the joke is valid, inserts the joke into the 
+ * database.  Throws an error otherwise.
+ * @param {String} user - the username of author of the joke
+ * @param {String} password - the password provided to match with the user
+ * @param {String} setup - the setup of the joke
+ * @param {String} punchline - the punchline of the joke
+ * @param {Function} callback(err, joke_doc) - called after the joke is
+ * inserted or an error occurs
+ * 				@param {String} err - the error message or null if no error
+ * 				@param {JSON} joke_doc - the inserted joke 
+ */
 exports.submitJoke = function(user, password, setup, punchline, callback) {
 	userModel.loginUser(user,password,function(err,doc_user) {
 		if(err)	{
 			callback(err,false);
 		}
 		else if(doc_user) {
-			addJoke(user, setup, punchline, callback);
+			validateJoke(setup, punchline, function(valid) {
+				if(valid) {
+					addJoke(user, setup, punchline, callback);
+				}
+				else {
+					callback("Unable to insert joke", null);
+				}
+			});
 		}
 		else {
 			callback("Please log in",false);
