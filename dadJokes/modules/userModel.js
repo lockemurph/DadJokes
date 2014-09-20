@@ -48,12 +48,13 @@ var getUser = function(userName, password, callback) {
  * 		@param {JSON} doc_user - the user that was inserted
  */
 var addUser = function(userName, password, callback) {
-	users.findOne({ "username" : userName }, function(err, doc_user) {
+	users.findOne({ "username" : userName }, function(err, possUser) {
 		if(err) {
 			console.log(err)
 			callback(err, null)
 		}
-		else if(doc_user) {
+		else if(possUser) {
+			console.log(possUser);
 			callback("This username is taken", null)
 		}
 		else {

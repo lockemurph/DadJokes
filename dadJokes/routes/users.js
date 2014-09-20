@@ -16,12 +16,20 @@ router.post('/logout', function(req, res) {
 	res.redirect(backURL);
 });
 
+
+/*POST a new user, then login as them if successful, or send and error **/
 router.post('/adduser', function(req, res) {
-//TODO - impliment adding a new user
-	userModel.addNewUser(req.body.username, req.body.password, function(err, newLogin){
-		res.redirect('../jokes/jokelist' );
-	
-});
+	userModel.addNewUser(req.body.user, req.body.password, function(err, newLogin){
+		if(err) {
+			res.end(JSON.stringify({error: err}));
+		}
+		else {
+			var sess = req.session;
+			sess.user = newLogin.username;
+			sess.password = req.body.password;
+			res.end(JSON.stringify(newLogin));
+		}
+	});
 });
 /**
 Post for logging in

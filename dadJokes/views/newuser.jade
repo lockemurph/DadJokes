@@ -4,6 +4,7 @@ block content
 	script(src="/javascripts/newUserValidation.js")
 	h1= title
 	form#formAddUser(name="adduser",method="post",action="/users/adduser")
-		input#inputUserName(type="text", placeholder="username", name="username")
-		input#inputPassword(type="text", placeholder="password", name="password")
+		input#inputNewUserName(type="text", placeholder="username", name="username")
+		input#inputNewPassword(type="password", placeholder="password", name="password")
 		button#btnSubmit(type="submit") submit
+	#errorUserMessage
